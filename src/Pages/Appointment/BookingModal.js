@@ -16,6 +16,7 @@ const BookingModal = ({ treatment, setTreatment, selectedDate ,refetch}) => {
         const name = form.name.value;
         const email = form.email.value;
         const phone = form.phone.value;
+        
 
 
 
@@ -27,9 +28,10 @@ const BookingModal = ({ treatment, setTreatment, selectedDate ,refetch}) => {
             slot,
             email,
             phone,
+         
 
         }
-        fetch('http://localhost:500/bookings', {
+        fetch('https://doctors-server-sage.vercel.app/bookings', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

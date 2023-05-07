@@ -5,6 +5,7 @@ import SearchBar from '../SearchBar/SearchBar'
 import Testimonial from '../../Home/Testimonial/Testimonial'
 import Doctors from '../../Doctors/Doctors'
 
+
 export const Home = () => {
   return (
     <div className="">
@@ -12,6 +13,7 @@ export const Home = () => {
         <SearchBar></SearchBar>
         <Services></Services>
         <Doctors />
+
         <Testimonial></Testimonial>
     </div>
   )

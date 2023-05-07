@@ -9,7 +9,7 @@ function Search() {
   const [data,setData] = useState([])
   useEffect(()=>{
     const fetchUsers = async()=>{
-      const res = await axios.get(`http://localhost:500/appointmentOptions/?q=${query}`)
+      const res = await axios.get(`https://doctors-server-sage.vercel.app/appointmentOptions/?q=${query}`)
       setData(res.data);
     };
    if(query.length === 0 || query.length >1 ) fetchUsers();

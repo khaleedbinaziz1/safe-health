@@ -5,8 +5,10 @@ import { useQuery } from '@tanstack/react-query';
 
 const MyAppointment = () => {
     const { user } = useContext(AuthContext);
+    console.log(user.name);
+    
 
-    const url = `http://localhost:500/bookings?email=${user?.email}`;
+    const url = `https://doctors-server-sage.vercel.app/bookings?email=${user?.email}`;
 
     const { data: bookings = [] } = useQuery({
         queryKey: ['bookings', user?.email],
@@ -30,7 +32,7 @@ const MyAppointment = () => {
                         <tr>
                             <th></th>
                             <th>Name</th>
-                            <th>Treatment</th>
+                            <th>Doctor</th>
                             <th>Date</th>
                             <th>Time</th>
 

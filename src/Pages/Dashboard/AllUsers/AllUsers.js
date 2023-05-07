@@ -9,7 +9,7 @@ const AllUsers = () => {
     const { data: users = [],refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:500/users');
+            const res = await fetch('https://doctors-server-sage.vercel.app/users');
             const data = await res.json();
             return data;
         }
@@ -17,7 +17,7 @@ const AllUsers = () => {
 
 
     const handleMakeAdmin = id => {
-        fetch(`http://localhost:500/users/admin/${id}`, {
+        fetch(`https://doctors-server-sage.vercel.app/users/admin/${id}`, {
             method: 'PUT', 
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`
@@ -26,9 +26,12 @@ const AllUsers = () => {
         .then(res => res.json())
         .then(data => {
             if(data.modifiedCount > 0){
-                toast.success('Make admin successful.')
+                toast.success('Make admin successful.');
                 refetch();
             }
+            else {
+               toast.error('Failed to make admin.');
+              }
         })
     }
     return (
@@ -42,6 +45,7 @@ const AllUsers = () => {
                             <th></th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Doctor</th>
                             <th>Admin</th>
                             <th>Delete</th>
                         </tr>
@@ -53,6 +57,7 @@ const AllUsers = () => {
                                     <td>{i + 1}</td>
                                     <td>{user.name}</td>
                                     <td>{user.email}</td>
+                                    <td> {user?.role !== 'doctor' && <button onClick={() => handleMakeAdmin(user._id)} className='btn btn-xs btn-accent'>Make doctor</button>}</td>
                                     <td> {user?.role !== 'admin' && <button onClick={() => handleMakeAdmin(user._id)} className='btn btn-xs btn-primary'>Make Admin</button>}</td>
                                     <td> <button className='btn btn-xs btn-danger'>delete</button></td>
                                 </tr>

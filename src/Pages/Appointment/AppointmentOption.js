@@ -1,15 +1,21 @@
 import React from 'react'
-import gyno from '../../assets/images/gyno.svg'
+import bg from '../../assets/images/docbg.svg'
 
 const AppointmentOption = ({ appointmentOption, setTreatment }) => {
-    const { name, slots,speciality} = appointmentOption;
+    const { name, slots,specialty,hospital,image} = appointmentOption;
     return (
 
-        <div className="card w-96 bg-base-100 shadow-xl">
-            <div className="card-body text-center">
-            <img src={gyno} alt="Shoes" className="rounded-xl" />
-                <h2 className="card-title justify-center">{name}</h2>
-                <div className="badge badge-primary badge-outline w-1/2">{speciality}</div>
+        <div className="card   shadow-xl p-10">
+         <div className="justify-center flex"  style={{backgroundImage: `url(${bg})`,backgroundRepeat: 'no-repeat',width:'100%',borderRadius:'10px'}}>
+                <img src={image} alt="doc"  />
+              </div>
+
+
+              <div className="card-body items-center text-center">
+
+              <h2 className="card-title justify-center">Dr.{name}</h2>
+                <p className="text-primary border">{specialty}</p>
+                <p className="">{hospital}</p>
                 <p>{slots.length > 0 ? slots[0] : 'Try another day please'}</p>
                 <p>{slots.length} {slots.length > 1 ? 'slots' : 'slot'} available</p>
                 <div className="card-actions justify-center">
@@ -20,8 +26,11 @@ const AppointmentOption = ({ appointmentOption, setTreatment }) => {
                         onClick={() => setTreatment(appointmentOption)}
                     >Book Appointment</label>
                 </div>
+              </div>
+
+              
             </div>
-        </div>
+        
     )
 }
 

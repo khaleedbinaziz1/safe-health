@@ -1,80 +1,141 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import Loading from '../../Shared/Loading';
 
 const AddDoctors = () => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [slots, setSlots] = useState('');
-  const [image, setImage] = useState(null);
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    
+    const imageHostKey = process.env.REACT_APP_imgbb_key;
+    console.log(imageHostKey);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('image', image);
-    formData.append('name', name);
-    formData.append('description', description);
-    formData.append('slots', slots);
-
-    try {
-      const response = await axios.post('http://localhost:500/appointmentOptions', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+    const navigate = useNavigate();
+    
+    const { data: specialties, isLoading } = useQuery({
+        queryKey: ['specialty'],
+        queryFn: async () => {
+            const res = await fetch('https://doctors-server-sage.vercel.app/appointmentSpecialty');
+            const data = await res.json();
+            return data;
         }
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    })
 
-  return (
-    <form onSubmit={handleSubmit} className="w-full mx-auto my-8 p-8 rounded-lg shadow-md bg-white">
-      <h2 className="text-lg font-medium mb-4">Add Doctor</h2>
-      <div className="mb-4">
-        <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Name:</label>
-        <input
-          type="text"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full border border-gray-400 p-2 rounded-md focus:outline-none focus:border-blue-500"
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="description" className="block text-gray-700 font-medium mb-2">Description:</label>
-        <input
-          type="text"
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="w-full border border-gray-400 p-2 rounded-md focus:outline-none focus:border-blue-500"
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="slots" className="block text-gray-700 font-medium mb-2">Slots:</label>
-        <input
-          type="text"
-          id="slots"
-          value={slots}
-          onChange={(e) => setSlots(e.target.value)}
-          className="w-full border border-gray-400 p-2 rounded-md focus:outline-none focus:border-blue-500"
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="image" className="block text-gray-700 font-medium mb-2">Image:</label>
-        <input
-          type="file"
-          id="image"
-          onChange={(e) => setImage(e.target.files[0])}
-          className="w-full border border-gray-400 p-2 rounded-md focus:outline-none focus:border-blue-500"
-        />
-      </div>
-      <button type="submit" className="w-full btn-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Submit
-      </button>
-    </form>
-  );
+    const handleAddDoctor = data => {
+        const image = data.image[0];
+        const formData = new FormData();
+        formData.append('image', image);
+        const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(imgData => {
+            if(imgData.success){
+                console.log(imgData.data.url);
+                const doctor = {
+                    name: data.name, 
+                    email: data.email,
+                    specialty: data.specialty,
+                    image: imgData.data.url,
+                    slots: [
+                      "08.00 AM - 08.30 AM",
+                      "08.30 AM - 09.00 AM",
+                      "09.00 AM - 9.30 AM",
+                      "09.30 AM - 10.00 AM",
+                      "10.00 AM - 10.30 AM",
+                      "10.30 AM - 11.00 AM",
+                      "11.00 AM - 11.30 AM",
+                      "11.30 AM - 12.00 AM",
+                      "1.00 PM - 1.30 PM",
+                      "1.30 PM - 2.00 PM",
+                      "2.00 PM - 2.30 PM",
+                      "2.30 PM - 3.00 PM",
+                      "3.00 PM - 3.30 PM",
+                      "3.30 PM - 4.00 PM",
+                      "4.00 PM - 4.30 PM",
+                      "4.30 PM - 5.00 PM"
+                    ]
+                }
+    
+                // save doctor information to the database
+                fetch('https://doctors-server-sage.vercel.app/addDoctor', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json', 
+                        authorization: `bearer ${localStorage.getItem('accessToken')}`
+                    },
+                    body: JSON.stringify(doctor)
+                })
+                .then(res => res.json())
+                .then(result =>{
+                    console.log(result);
+                    toast.success(`${data.name} is added successfully`);
+                    navigate('/dashboard/managedoctors')
+                })
+            }
+        })
+    }
+    
+
+    if(isLoading){
+        return <Loading></Loading>
+    }
+
+    return (
+        <div className='w-96 p-7'>
+            <h2 className="text-4xl">Add A Doctor</h2>
+            <form onSubmit={handleSubmit(handleAddDoctor)}>
+                <div className="form-control w-full max-w-xs">
+                    <label className="label"> <span className="label-text">Name</span></label>
+                    <input type="text" {...register("name", {
+                        required: "Name is Required"
+                    })} className="input input-bordered w-full max-w-xs" />
+                    {errors.name && <p className='text-red-500'>{errors.name.message}</p>}
+                </div>
+                <div className="form-control w-full max-w-xs">
+                    <label className="label"> <span className="label-text">Email</span></label>
+                    <input type="email" {...register("email", {
+                        required: true
+                    })} className="input input-bordered w-full max-w-xs" />
+                    {errors.email && <p className='text-red-500'>{errors.email.message}</p>}
+                </div>
+                <div className="form-control w-full max-w-xs">
+                    <label className="label"> <span className="label-text">Specialty</span></label>
+                    <select 
+                    {...register('specialty')}
+                    className="select input-bordered w-full max-w-xs">
+                        {
+                            specialties.map(specialty => <option
+                                key={specialty._id}
+                                value={specialty.name}
+                            >{specialty.specialty}</option>)
+                        }
+                        
+                        
+                    </select>
+                </div>
+                <div className="form-control w-full max-w-xs">
+                    <label className="label"> <span className="label-text">Photo</span></label>
+                    <input type="file" {...register("image", {
+                        required: "Photo is Required"
+                    })} className="input input-bordered w-full max-w-xs" />
+                    {errors.img && <p className='text-red-500'>{errors.img.message}</p>}
+                </div>
+                <input className='btn btn-primary w-full mt-4' value="Add Doctor" type="submit" />
+            </form>
+        </div>
+    );
 };
+
+
+/**
+ * Three places to store images
+ * 1. Third party image hosting server 
+ * 2. File system of your server
+ * 3. mongodb (database)
+*/
 
 export default AddDoctors;

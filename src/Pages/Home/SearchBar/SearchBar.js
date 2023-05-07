@@ -1,33 +1,24 @@
-import React from 'react'
+import React from 'react';
+import partner1 from '../../../assets/images/partner1.svg';
+import partner2 from '../../../assets/images/pertner2.svg';
+import partner3 from '../../../assets/images/pertner3.svg';
+import partner4 from '../../../assets/images/pertner4.svg';
+import partner5 from '../../../assets/images/partner5.svg';
 
-const SearchBar = () => {
-    return (
-        <div className=" flex justify-center ">
+const Partners = () => {
+  return (
+    <div className="bg-accent p-10">
+      <h2 className="text-center text-2xl font-bold mb-10">Our Partners</h2>
+      <div className="flex justify-center items-center pb-10" 
+      >
+        <img src={partner1} alt="Partner 1" className="h-16 mx-6 " style={{width:'10%',height:'10%'}}/>
+        <img src={partner2} alt="Partner 2" className="h-16 mx-6" style={{width:'10%',height:'10%'}}/>
+        <img src={partner3} alt="Partner 3" className="h-16 mx-6" style={{width:'10%',height:'10%'}}/>
+        <img src={partner4} alt="Partner 3" className="h-16 mx-6" style={{width:'10%',height:'10%'}}/>
+        <img src={partner5} alt="Partner 3" className="h-16 mx-6" style={{width:'10%',height:'10%'}}/>
+      </div>
+    </div>
+  );
+};
 
-            <div className=" shadow-2xl flex justify-center p-10 round item-stretch" style={{ borderRadius: '10px' }}>
-                <div className="form-control w-full max-w-xs">
-                    <label className="label">
-                        <span className="label-text">What is your name?</span>
-                    </label>
-                    <input type="text" placeholder="Name of doctor" className="input input-bordered mr-5   " />
-                </div>
-                <div className="form-control w-full max-w-xs">
-                <label className="label">
-                        <span className="label-text">Speciality</span>
-                    </label>
-                    <select className="select select-bordered mr-5 ">
-                        <option disabled selected>cardiology</option>
-                        <option>Gastro Liver</option>
-                        <option>Greedo</option>
-                    </select>
-                </div>
-
-
-
-                <button className="btn btn-primary mt-9">Button</button>
-            </div>
-        </div>
-    )
-}
-
-export default SearchBar
+export default Partners;

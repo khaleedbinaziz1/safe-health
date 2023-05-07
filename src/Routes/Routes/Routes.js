@@ -10,6 +10,13 @@ import MyAppointment from "../../Pages/Dashboard/MyAppointment/MyAppointment";
 import AddDoctors from "../../Pages/Dashboard/AddDoctors/AddDoctors";
 import AllUsers from "../../Pages/Dashboard/AllUsers/AllUsers";
 import AdminRoute from "../AdminRoute/AdminRoute";
+import ManageDoctors from "../../Pages/Dashboard/ManageDoctors/ManageDoctors";
+import AddReview from "../../Pages/Dashboard/AddReview/AddReview";
+import Info from "../../Pages/Dashboard/Info/Info";
+import About from "../../Pages/About/About";
+import AppointmentRequest from "../../Pages/Dashboard/AppointmentRequest/AppointmentRequest";
+import DoctorProfile from "../../Pages/Dashboard/DoctorProfile/DoctorProfile";
+import AdminProfile from "../../Pages/Dashboard/AdminProfile/AdminProfile";
 
 
 
@@ -25,9 +32,14 @@ export const router = createBrowserRouter([
                 element: <Home></Home>
             },
             {
+                path: '/about',
+                element: <About></About>
+            },
+            {
                 path: '/login',
                 element: <Login></Login>
             },
+          
             {
                 path: '/signup',
                 element: <Signup></Signup>
@@ -40,6 +52,7 @@ export const router = createBrowserRouter([
                     </PrivateRoute>
 
             },
+           
 
         ]
     },
@@ -54,12 +67,36 @@ export const router = createBrowserRouter([
                 element: <MyAppointment />
             },
             {
+                path: '/dashboard/appointmentRequest',
+                element: <AppointmentRequest></AppointmentRequest>
+            },
+            {
+                path: '/dashboard/givereview',
+                element: <AddReview />
+            },
+            {
+                path: '/dashboard/info',
+                element: <Info/>
+            },
+            {
+                path: '/dashboard/docProfile',
+                element: <DoctorProfile/>
+            },
+            {
+                path: '/dashboard/adminProfile',
+                element: <AdminProfile/>
+            },
+            {
                 path: '/dashboard/addDoctors',
-                element: <AddDoctors />
+                element: <AdminRoute><AddDoctors /></AdminRoute>
             },
             {
                 path: '/dashboard/allUsers',
                 element: <AdminRoute> <AllUsers /></AdminRoute>
+            },
+            {
+                path: '/dashboard/managedoctors',
+                element: <AdminRoute> <ManageDoctors /></AdminRoute>
             }
         ]
     }

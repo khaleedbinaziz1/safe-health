@@ -1,7 +1,7 @@
 import React from 'react';
-import fluoride from '../../../assets/images/Icons.svg'
-import cavity from '../../../assets/images/icon2.svg'
-import whitening from '../../../assets/images/icon3.svg'
+import fluoride from '../../../assets/images/fluoride.svg'
+import cavity from '../../../assets/images/whitening.svg'
+import whitening from '../../../assets/images/cavity.svg'
 import Service from './Service';
 
 const Services = () => {
@@ -9,17 +9,17 @@ const Services = () => {
     const servicesData = [
         {
             id: 1,
-            name: 'Fluoride Treatment',
+            name: 'Well equipped lab',
             img: fluoride
         },
         {
             id: 2,
-            name: 'Online Booking',
+            name: 'Online Appointment',
             img: cavity
         },
         {
             id: 3,
-            name: 'Teeth Whitening',
+            name: 'Health Store',
             img: whitening
         },
        

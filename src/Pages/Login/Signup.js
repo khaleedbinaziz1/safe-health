@@ -27,7 +27,8 @@ const Signup = () => {
            console.log(user);
            toast.success('user created successfully.');
            const userInfo ={
-            displayName: data.name
+            displayName: data.name,
+            
            }
            updateUser(userInfo)
            .then(()=>{
@@ -42,7 +43,7 @@ const Signup = () => {
     }
     const saveUser = (name, email) =>{
       const user ={name, email};
-      fetch('http://localhost:500/users', {
+      fetch('https://doctors-server-sage.vercel.app/users', {
           method: 'POST',
           headers: {
               'content-type': 'application/json'

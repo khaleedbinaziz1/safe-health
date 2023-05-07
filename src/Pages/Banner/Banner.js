@@ -11,7 +11,7 @@ const Banner = () => {
                 backgroundColor: 'primary',
                 backgroundSize: 'cover'
             }}>
-            <div className="hero-content flex-col lg:flex-row-reverse">
+            <div className="hero-content flex-col lg:flex-row-reverse ">
                 <img src={doctors} className="  " alt="" style={{
 
                     width: '100%',
